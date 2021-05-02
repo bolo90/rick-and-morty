@@ -23,7 +23,7 @@ const FilterMenu = memo(({ filterParams, setFilterParams }: FilterMenuProps) => 
   const [gender, setGender] = useState<Gender | undefined>();
   const [name, setName] = useState<string>('');
   const dispatch = useDispatch();
-  const debounceSetFilters = useMemo(() => debounce(name => setFilterParams(f => ({ ...f, name })), 500), []);
+  const debounceSetFilters = useMemo(() => debounce(name => setFilterParams(f => ({ ...f, name })), 500), [setFilterParams]);
 
   const resetFilters = () => {
     if (!filterParams) return;

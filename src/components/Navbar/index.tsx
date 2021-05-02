@@ -8,7 +8,6 @@ interface NavbarProps {
 
 const Navbar = ({ setShow }: NavbarProps) => {
   const { pathname } = useLocation();
-  console.log('pathname', pathname);
   return (
     <>
       <Nav>

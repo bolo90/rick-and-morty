@@ -14,9 +14,6 @@ const statusItems: Status[] = ['Alive', 'Dead', 'Unknown'];
 const genderItems: Gender[] = ['Female', 'Male', 'Genderless', 'Unknown'];
 
 const FilterMenu = memo(() => {
-  const renders = useRef(0);
-  console.log('renders ', renders.current++);
-  // const [name, setName] = useState('');
   const [status, setStatus] = useState<Status | undefined>();
   const [gender, setGender] = useState<Gender | undefined>();
   const [name, setName] = useState<string>('');

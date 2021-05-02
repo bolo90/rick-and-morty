@@ -7,7 +7,6 @@ import CharacterCard from '../../components/CharacterCard';
 import FilterMenu from '../../components/FilterMenu';
 import { Row, Col } from '../../theme/grid';
 import Spinner from '../../components/Spinner';
-import InfiniteScroll from 'react-infinite-scroll-component';
 
 const Characters = memo(() => {
   const dispatch = useAppDispatch();
@@ -23,7 +22,6 @@ const Characters = memo(() => {
   
   const lastElementRef = useCallback(element => {
     // callback function called every time the last element appears into the screen
-    console.log('element', element);
     if (loading) return; // prevent infinite re-render
     if (observer.current) observer.current.disconnect(); // disconnect current observer to set with the new one
     observer.current = new IntersectionObserver(entries => {

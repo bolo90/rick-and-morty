@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useRef, memo } from 'react';
+import { useState, useEffect, useCallback, memo } from 'react';
 import Dropdown from 'react-dropdown';
 import 'react-dropdown/style.css';
 import { Row, Col } from '../../theme/grid';

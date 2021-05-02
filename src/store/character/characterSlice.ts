@@ -26,6 +26,15 @@ export const getAllCharacter = createAsyncThunk(
   }
 );
 
+export const loadMoreCharacters = createAsyncThunk(
+  'character/load-more',
+  async (filters: FilterParams): Promise<ApiModel<CharacterModel[]>> => {
+    const { data } = await axios.get(ENDPOINTS.CHARACTERS.CHARACTERS, { params: filters });
+    return data;
+  }
+);
+
+
 export const characterSlice = createSlice({
   name: 'character',
   initialState,
@@ -40,10 +49,7 @@ export const characterSlice = createSlice({
       .addCase(getAllCharacter.fulfilled, (state, { payload }) => {
         state.loaded = true;
         state.loading = false;
-        if (state.characters?.results)
-          state.characters = { info: payload.info, results: [...state.characters.results, ...payload.results] };
-        else
-          state.characters = payload
+        state.characters = payload;
         state.error = undefined;
       })
       .addCase(getAllCharacter.rejected, (state, action) => {
@@ -51,7 +57,25 @@ export const characterSlice = createSlice({
         state.loading = false;
         state.characters = undefined;
         state.error = action.payload;
-      });
+      })
+      .addCase(loadMoreCharacters.pending, (state) => {
+        state.loading = true;
+        state.loaded = false;
+        state.error = undefined;
+      })
+      .addCase(loadMoreCharacters.fulfilled, (state, { payload }) => {
+        state.loaded = true;
+        state.loading = false;
+        if (state.characters?.results)
+          state.characters = { info: payload.info, results: [...state.characters.results, ...payload.results] };
+        state.error = undefined;
+      })
+      .addCase(loadMoreCharacters.rejected, (state, action) => {
+        state.loaded = true;
+        state.loading = false;
+        state.characters = undefined;
+        state.error = action.payload;
+      })
   },
 });
 

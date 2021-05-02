@@ -10,14 +10,18 @@ import { debounce } from 'lodash';
 import { Input } from '../../common/common.styled';
 import { Gender, Status } from '../../models/types.model';
 
+interface FilterMenuProps {
+  setFilterParams: React.Dispatch<React.SetStateAction<FilterParams | undefined>>;
+  filterParams: FilterParams | undefined;
+}
+
 const statusItems: Status[] = ['Alive', 'Dead', 'Unknown'];
 const genderItems: Gender[] = ['Female', 'Male', 'Genderless', 'Unknown'];
 
-const FilterMenu = memo(() => {
+const FilterMenu = memo(({ filterParams, setFilterParams }: FilterMenuProps) => {
   const [status, setStatus] = useState<Status | undefined>();
   const [gender, setGender] = useState<Gender | undefined>();
   const [name, setName] = useState<string>('');
-  const [filterParams, setFilterParams] = useState<FilterParams>();
   const dispatch = useDispatch();
   const debounceSetFilters = useMemo(() => debounce(name => setFilterParams(f => ({ ...f, name })), 500), []);
 
@@ -43,13 +47,7 @@ const FilterMenu = memo(() => {
     if (status) {
       setFilterParams(f => ({ ...f, status }));
     }
-  }, [gender, status]);
-
-  useEffect(() => {
-    if (filterParams) {
-      dispatch(getAllCharacter(filterParams));
-    }
-  }, [filterParams, dispatch]);
+  }, [gender, status, setFilterParams]);
 
   return (
     <Row justify="center">

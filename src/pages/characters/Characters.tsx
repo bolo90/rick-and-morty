@@ -1,24 +1,27 @@
-import { memo, useCallback, useEffect, useRef } from 'react';
+import { memo, useCallback, useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useAppDispatch } from '../../app/hooks';
-import { getAllCharacter, characterState } from '../../store/character/characterSlice';
+import { getAllCharacter, characterState, loadMoreCharacters } from '../../store/character/characterSlice';
 import { ContainerFluid } from '../../common/common.styled';
 import CharacterCard from '../../components/CharacterCard';
 import FilterMenu from '../../components/FilterMenu';
 import { Row, Col } from '../../theme/grid';
 import Spinner from '../../components/Spinner';
+import { FilterParams } from '../../models/api.model';
 
 const Characters = memo(() => {
   const dispatch = useAppDispatch();
   const { characters, loading } = useSelector(characterState);
+  const [filterParams, setFilterParams] = useState<FilterParams>();
   const observer = useRef<IntersectionObserver>();
   
   const fetchMore = useCallback(() => {
-    const page = characters?.info.next?.replace('https://rickandmortyapi.com/api/character?page=', '');
-    if (page) {
-      dispatch(getAllCharacter({ page }));
+    const nextPage = characters?.info.next?.match(/page=((\-|\+)?[0-9]+(\.[0-9]+)?)/);
+    if (nextPage && nextPage[1]) {
+      const newFilters: FilterParams = { ...filterParams, page: nextPage[1] };
+      dispatch(loadMoreCharacters(newFilters));
     }
-  }, [dispatch, characters]);
+  }, [dispatch, characters, filterParams]);
   
   const lastElementRef = useCallback(element => {
     // callback function called every time the last element appears into the screen
@@ -37,17 +40,18 @@ const Characters = memo(() => {
   }, [loading, characters, fetchMore]);
 
   useEffect(() => {
-    if (characters?.info || characters?.results?.length) {
-      return;
-    }
     dispatch(getAllCharacter());
-  }, [dispatch, characters]);
+  }, [dispatch]);
 
-
+  useEffect(() => {
+    if (filterParams) {
+      dispatch(getAllCharacter(filterParams));
+    }
+  }, [filterParams, dispatch]);
 
   return (
     <ContainerFluid>
-      <FilterMenu />
+      <FilterMenu filterParams={filterParams} setFilterParams={setFilterParams}/>
       {
         <Row justify="center">
           {characters?.results.map((char, i) => (

@@ -1,6 +1,5 @@
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { device } from '../../theme/breakpoints';
 
 export const StyledButton = styled.div`
 height: 100%;

@@ -18,7 +18,7 @@ const Episodes = memo(() => {
       return;
     }
     dispatch(getAllEpisodes());
-  }, [dispatch]);
+  }, [dispatch, episodes]);
 
   const fetchDetails = (episode: EpisodeDetailModel) => {
     setEpisodeDetailId(episode.id);

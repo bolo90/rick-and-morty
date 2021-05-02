@@ -1,4 +1,4 @@
-import { memo, useCallback, useEffect, useRef, useState } from 'react';
+import { memo, useCallback, useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { useAppDispatch } from '../../app/hooks';
 import { getAllCharacter, characterState } from '../../store/character/characterSlice';
@@ -10,7 +10,7 @@ import Spinner from '../../components/Spinner';
 
 const Characters = memo(() => {
   const dispatch = useAppDispatch();
-  const { characters, loading, loaded } = useSelector(characterState);
+  const { characters, loading } = useSelector(characterState);
   const observer = useRef<IntersectionObserver>();
   
   const fetchMore = useCallback(() => {

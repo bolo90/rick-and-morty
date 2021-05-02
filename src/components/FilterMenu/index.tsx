@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, memo } from 'react';
+import { useState, useEffect, memo, useMemo } from 'react';
 import Dropdown from 'react-dropdown';
 import 'react-dropdown/style.css';
 import { Row, Col } from '../../theme/grid';
@@ -19,7 +19,7 @@ const FilterMenu = memo(() => {
   const [name, setName] = useState<string>('');
   const [filterParams, setFilterParams] = useState<FilterParams>();
   const dispatch = useDispatch();
-  const debounceSetFilters = useCallback(debounce(name => setFilterParams(f => ({ ...f, name })), 500), []);
+  const debounceSetFilters = useMemo(() => debounce(name => setFilterParams(f => ({ ...f, name })), 500), []);
 
   const resetFilters = () => {
     if (!filterParams) return;

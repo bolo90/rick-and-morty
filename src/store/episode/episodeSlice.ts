@@ -1,4 +1,4 @@
-import { EpisodeDetailModel, EpisodeModel } from './../../models/episode.model';
+import { EpisodeDetailModel } from './../../models/episode.model';
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { RootState } from '../../app/store';
 import { BaseState } from '../../models/base-state.model';

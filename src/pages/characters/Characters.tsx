@@ -16,7 +16,7 @@ const Characters = memo(() => {
   const observer = useRef<IntersectionObserver>();
   
   const fetchMore = useCallback(() => {
-    const nextPage = characters?.info.next?.match(/page=((\-|\+)?[0-9]+(\.[0-9]+)?)/);
+    const nextPage = characters?.info.next?.match(/page=((-|\+)?[0-9]+(\.[0-9]+)?)/);
     if (nextPage && nextPage[1]) {
       const newFilters: FilterParams = { ...filterParams, page: nextPage[1] };
       dispatch(loadMoreCharacters(newFilters));
